@@ -12,7 +12,7 @@ class Callback {
 			$pid       = $_POST['id'];
 			$porder_id = $_POST['order_id'];
 
-			$cf_Form = $wpdb->get_row( "SELECT * FROM " . $wpdb->prefix . "cfZ7_transaction WHERE transid='$pid'" );
+			$cf_Form = $wpdb->get_row( "SELECT * FROM " . $wpdb->prefix . "cf7_transactions WHERE transid='$pid'" );
 			if ( $cf_Form !== NULL ) {
 				$price = $cf_Form->cost;
 			}
@@ -41,7 +41,7 @@ class Callback {
 			curl_close( $ch );
 
 			if ( $http_status != 200 ) {
-				$wpdb->update( $wpdb->prefix . 'cfZ7_transaction', array( 'status' => 'error' ), array( 'transid' => $pid ), array( '%s' ), array( '%d' ) );
+				$wpdb->update( $wpdb->prefix . 'cf7_transactions', array( 'status' => 'error' ), array( 'transid' => $pid ), array( '%s' ), array( '%d' ) );
 
 				return '<b style="color:#f44336;">' . sprintf( 'خطا هنگام بررسی وضعیت تراکنش. کد خطا: %s', $http_status ) . '<b/>';;
 			}
@@ -52,11 +52,11 @@ class Callback {
 			$inquiry_amount   = empty( $result->amount ) ? NULL : $result->amount;
 
 			if ( empty( $inquiry_status ) || empty( $inquiry_track_id ) || empty( $inquiry_amount ) || $inquiry_amount != $price || $inquiry_status != 100 ) {
-				$wpdb->update( $wpdb->prefix . 'cfZ7_transaction', array( 'status' => 'error' ), array( 'transid' => $pid ), array( '%s' ), array( '%d' ) );
+				$wpdb->update( $wpdb->prefix . 'cf7_transactions', array( 'status' => 'error' ), array( 'transid' => $pid ), array( '%s' ), array( '%d' ) );
 
 				return '<b style="color:#f44336;">' . $this->failed_message( $value['failed_massage'], $inquiry_track_id, $inquiry_order_id ) . '<b/>';
 			} else {
-				$wpdb->update( $wpdb->prefix . 'cfZ7_transaction', array(
+				$wpdb->update( $wpdb->prefix . 'cf7_transactions', array(
 					'status'  => 'success',
 					'transid' => $inquiry_track_id,
 				), array( 'transid' => $pid ), array( '%s', '%s' ), array( '%d' ) );

@@ -40,7 +40,7 @@ class Payment {
 				}
 				$active_gateway    = 'IDPay';
 				$url_return        = $value['return'];
-				$table_name        = $wpdb->prefix . "cfZ7_transaction";
+				$table_name        = $wpdb->prefix . "cf7_transactions";
 				$_x                = array();
 				$_x['idform']      = $postid;
 				$_x['transid']     = '';

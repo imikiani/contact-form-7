@@ -21,7 +21,7 @@ register_uninstall_hook( __FILE__, "idpay_cf7_uninstall" );
 
 function idpay_cf7_activate() {
 	global $wpdb;
-	$table_name = $wpdb->prefix . "cfZ7_transaction";
+	$table_name = $wpdb->prefix . "cf7_transactions";
 	if ( $wpdb->get_var( "show tables like '$table_name'" ) != $table_name ) {
 		$sql = "CREATE TABLE " . $table_name . " (
 			id mediumint(11) NOT NULL AUTO_INCREMENT,

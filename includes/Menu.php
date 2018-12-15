@@ -130,7 +130,7 @@ class Menu {
 		$pagenum    = isset( $_GET['pagenum'] ) ? absint( $_GET['pagenum'] ) : 1;
 		$limit      = 6;
 		$offset     = ( $pagenum - 1 ) * $limit;
-		$table_name = $wpdb->prefix . "cfZ7_transaction";
+		$table_name = $wpdb->prefix . "cf7_transactions";
 
 		$transactions = $wpdb->get_results( "SELECT * FROM $table_name where (status NOT like 'none') ORDER BY $table_name.id DESC LIMIT $offset, $limit", ARRAY_A );
 		$total        = $wpdb->get_var( "SELECT COUNT($table_name.id) FROM $table_name where (status NOT like 'none') " );
