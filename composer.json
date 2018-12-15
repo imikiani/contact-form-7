@@ -1,0 +1,16 @@
+{
+    "name": "idpay/cf7",
+    "description": "IDPay for Contact Form 7",
+    "authors": [
+        {
+            "name": "Iman Kiani",
+            "email": "kianiman@gmail.com"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "IDPay\\CF7\\" : "includes/"
+        }
+    }
+}
