@@ -2,7 +2,7 @@
 
 namespace IDPay\CF7;
 
-class Mail {
+class Payment {
 	public function after_send_mail( $cf7 ) {
 
 		global $postid;

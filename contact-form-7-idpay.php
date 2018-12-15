@@ -134,8 +134,8 @@ if ( is_plugin_active( 'contact-form-7/wp-contact-form-7.php' ) ) {
 	$IDPay_CF7_Menu = new IDPay\CF7\Menu();
 	add_action( 'admin_menu', array( $IDPay_CF7_Menu, 'admin_menu' ) );
 
-	$IDPay_Mail = new IDPay\CF7\Mail();
-	add_action( 'wpcf7_mail_sent', array( $IDPay_Mail, 'after_send_mail' ) );
+	$IDPay_Payment = new IDPay\CF7\Payment();
+	add_action( 'wpcf7_mail_sent', array( $IDPay_Payment, 'after_send_mail' ) );
 
 
 	$IDPay_CF7_Additional_settings = new IDPay\CF7\AdditionalSettingsForm();
