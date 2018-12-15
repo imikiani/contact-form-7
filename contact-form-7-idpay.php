@@ -11,12 +11,11 @@ Version: 1.0
 
 require_once 'vendor/autoload.php';
 
-$IDPay_Callback = new IDPay\CF7\Callback();
-add_shortcode( 'idpay_cf7_result', array( $IDPay_Callback, 'handler' ) );
-
 include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
 if ( is_plugin_active( 'contact-form-7/wp-contact-form-7.php' ) ) {
 
+	$IDPay_Callback = new IDPay\CF7\Callback();
+	add_shortcode( 'idpay_cf7_result', array( $IDPay_Callback, 'handler' ) );
 
 	$IDPay_CF7_Menu = new IDPay\CF7\Menu();
 	add_action( 'admin_menu', array( $IDPay_CF7_Menu, 'admin_menu' ) );
