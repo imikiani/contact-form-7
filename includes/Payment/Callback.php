@@ -1,5 +1,7 @@
 <?php
-namespace IDPay\CF7;
+namespace IDPay\CF7\Payment;
+use IDPay\CF7\ServiceInterface;
+
 class Callback implements ServiceInterface {
 	public function register() {
 		add_shortcode( 'idpay_cf7_result', array( $this, 'handler' ) );

@@ -1,6 +1,8 @@
 <?php
 
-namespace IDPay\CF7;
+namespace IDPay\CF7\Admin;
+use IDPay\CF7\ServiceInterface;
+
 class Menu implements ServiceInterface {
 	public function register() {
 		add_action( 'admin_menu', array( $this, 'admin_menu' ) );

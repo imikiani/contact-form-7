@@ -1,7 +1,8 @@
 <?php
 
 
-namespace IDPay\CF7;
+namespace IDPay\CF7\Admin;
+use IDPay\CF7\ServiceInterface;
 
 class AdditionalSettingsForm implements ServiceInterface {
 

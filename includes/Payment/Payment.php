@@ -1,6 +1,7 @@
 <?php
 
-namespace IDPay\CF7;
+namespace IDPay\CF7\Payment;
+use IDPay\CF7\ServiceInterface;
 
 class Payment implements ServiceInterface {
 
