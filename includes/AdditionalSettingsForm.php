@@ -3,7 +3,18 @@
 
 namespace IDPay\CF7;
 
-class AdditionalSettingsForm {
+class AdditionalSettingsForm implements ServiceInterface {
+
+	public function register() {
+		add_filter( 'wpcf7_editor_panels', array(
+			$this,
+			'editor_panels',
+		) );
+		add_action( 'wpcf7_save_contact_form', array(
+			$this,
+			'save',
+		) );
+	}
 
 	public function render( $cf7 ) {
 		$post_id = sanitize_text_field( $_GET['post'] );
@@ -65,7 +76,7 @@ class AdditionalSettingsForm {
 		$new_page = array(
 			'PricePay' => array(
 				'title'    => __( 'اطلاعات پرداخت', 'IDPay' ),
-				'callback' => array($this, 'render'),
+				'callback' => array( $this, 'render' ),
 			),
 		);
 		$panels   = array_merge( $panels, $new_page );

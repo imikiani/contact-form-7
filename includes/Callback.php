@@ -1,6 +1,10 @@
 <?php
 namespace IDPay\CF7;
-class Callback {
+class Callback implements ServiceInterface {
+	public function register() {
+		add_shortcode( 'idpay_cf7_result', array( $this, 'handler' ) );
+	}
+
 	public function handler( $atts ) {
 		global $wpdb;
 		$options = get_option( 'idpay_cf7_options' );

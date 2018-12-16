@@ -2,7 +2,11 @@
 
 namespace IDPay\CF7;
 
-class Payment {
+class Payment implements ServiceInterface {
+
+	public function register() {
+		add_action( 'wpcf7_mail_sent', array( $this, 'after_send_mail' ) );
+	}
 	public function after_send_mail( $cf7 ) {
 
 		global $postid;

@@ -3,7 +3,7 @@
 namespace IDPay\CF7;
 
 class Plugin {
-	public function activate() {
+	public static function activate() {
 		global $wpdb;
 		$table_name = $wpdb->prefix . "cf7_transactions";
 		if ( $wpdb->get_var( "show tables like '$table_name'" ) != $table_name ) {
@@ -52,7 +52,7 @@ class Plugin {
 		add_option( "idpay_cf7_options", $idpay_cf7_options );
 	}
 
-	function deactivate() {
+	public static function deactivate() {
 
 		function wp_config_delete( $slash = '' ) {
 			$config = file_get_contents( ABSPATH . "wp-config.php" );

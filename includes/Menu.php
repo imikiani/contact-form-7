@@ -1,7 +1,10 @@
 <?php
 
 namespace IDPay\CF7;
-class Menu {
+class Menu implements ServiceInterface {
+	public function register() {
+		add_action( 'admin_menu', array( $this, 'admin_menu' ) );
+	}
 
 	public function admin_menu() {
 		add_submenu_page( 'wpcf7',
