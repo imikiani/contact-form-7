@@ -19,7 +19,7 @@ if ( is_plugin_active( 'contact-form-7/wp-contact-form-7.php' ) ) {
 }
 
 function cf7_idpay_activate() {
-	\IDPay\CF7\Plugin::activate();
+	Plugin::activate();
 }
 
 function cf7_idpay_deactivate() {
