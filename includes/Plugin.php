@@ -15,13 +15,14 @@ class Plugin {
 
 	/**
 	 * This is triggered when the plugin is going to be activated.
-     *
-     * Creates a table in database which stores all transactions.
-     *
+	 *
+	 * Creates a table in database which stores all transactions.
+	 *
 	 * Also defines a variable in the 'wp-config.php' file so that
 	 * any contact form does not load javascript files in order to disabling
 	 * ajax capability of those form. This is happened so that we can redirect
-	 * to the gateway for processing a payment. => define('WPCF7_LOAD_JS', false);
+	 * to the gateway for processing a payment. => define('WPCF7_LOAD_JS',
+	 * false);
 	 */
 	public static function activate() {
 		global $wpdb;
@@ -57,9 +58,9 @@ class Plugin {
 			wp_config_put( '/' );
 		} else {
 			?>
-			<div class="error">
-				<p><?php _e( 'wp-config.php is not writable, please make wp-config.php writable - set it to 0777 temporarily, then set back to its original setting after this plugin has been activated.', 'cf7pp' ); ?></p>
-			</div>
+            <div class="error">
+                <p><?php _e( 'wp-config.php is not writable, please make wp-config.php writable - set it to 0777 temporarily, then set back to its original setting after this plugin has been activated.', 'cf7pp' ); ?></p>
+            </div>
 			<?php
 			exit;
 		}
@@ -90,41 +91,41 @@ class Plugin {
 			wp_config_delete( '/' );
 		} else if ( file_exists( ABSPATH . "wp-config.php" ) && ! is_writable( ABSPATH . "wp-config.php" ) ) {
 			?>
-			<div class="error">
-				<p><?php _e( 'wp-config.php is not writable, please make wp-config.php writable - set it to 0777 temporarily, then set back to its original setting after this plugin has been deactivated.', 'cf7pp' ); ?></p>
-			</div>
-			<button onclick="goBack()">Go Back and try again</button>
-			<script>
+            <div class="error">
+                <p><?php _e( 'wp-config.php is not writable, please make wp-config.php writable - set it to 0777 temporarily, then set back to its original setting after this plugin has been deactivated.', 'cf7pp' ); ?></p>
+            </div>
+            <button onclick="goBack()">Go Back and try again</button>
+            <script>
               function goBack() {
                 window.history.back();
               }
-			</script>
+            </script>
 			<?php
 			exit;
 		} else if ( file_exists( dirname( ABSPATH ) . "/wp-config.php" ) && ! is_writable( dirname( ABSPATH ) . "/wp-config.php" ) ) {
 			?>
-			<div class="error">
-				<p><?php _e( 'wp-config.php is not writable, please make wp-config.php writable - set it to 0777 temporarily, then set back to its original setting after this plugin has been deactivated.', 'cf7pp' ); ?></p>
-			</div>
-			<button onclick="goBack()">Go Back and try again</button>
-			<script>
+            <div class="error">
+                <p><?php _e( 'wp-config.php is not writable, please make wp-config.php writable - set it to 0777 temporarily, then set back to its original setting after this plugin has been deactivated.', 'cf7pp' ); ?></p>
+            </div>
+            <button onclick="goBack()">Go Back and try again</button>
+            <script>
               function goBack() {
                 window.history.back();
               }
-			</script>
+            </script>
 			<?php
 			exit;
 		} else {
 			?>
-			<div class="error">
-				<p><?php _e( 'wp-config.php is not writable, please make wp-config.php writable - set it to 0777 temporarily, then set back to its original setting after this plugin has been deactivated.', 'cf7pp' ); ?></p>
-			</div>
-			<button onclick="goBack()">Go Back and try again</button>
-			<script>
+            <div class="error">
+                <p><?php _e( 'wp-config.php is not writable, please make wp-config.php writable - set it to 0777 temporarily, then set back to its original setting after this plugin has been deactivated.', 'cf7pp' ); ?></p>
+            </div>
+            <button onclick="goBack()">Go Back and try again</button>
+            <script>
               function goBack() {
                 window.history.back();
               }
-			</script>
+            </script>
 			<?php
 			exit;
 		}

@@ -2,7 +2,9 @@
 /**
  * @file Contains Menu class.
  */
+
 namespace IDPay\CF7\Admin;
+
 use IDPay\CF7\ServiceInterface;
 
 /**
@@ -236,9 +238,9 @@ class Menu implements ServiceInterface {
 
 				if ( $transaction['status'] == "completed" ) {
 					echo '<b style="color:#0C9F55">موفقیت آمیز</b>';
-				} elseif ($transaction['status'] == "failed") {
+				} elseif ( $transaction['status'] == "failed" ) {
 					echo '<b style="color:#f00">ناموفق</b>';
-				} elseif ($transaction['status'] == "pending") {
+				} elseif ( $transaction['status'] == "pending" ) {
 					echo '<b style="color:#f00">در حال پرداخت</b>';
 				}
 				echo '</td></tr>';

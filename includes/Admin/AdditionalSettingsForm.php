@@ -3,7 +3,9 @@
 /**
  * @file Contains Admin AdditionalSettingsForm.
  */
+
 namespace IDPay\CF7\Admin;
+
 use IDPay\CF7\ServiceInterface;
 
 /**
@@ -32,12 +34,13 @@ class AdditionalSettingsForm implements ServiceInterface {
 	 * Renders a tab beside other tabs for a contact form in edit mode.
 	 *
 	 * @param $cf7
-	 *   the contact form 7 instance which is passed through the hook 'editor_panels'.
+	 *   the contact form 7 instance which is passed through the hook
+	 *   'editor_panels'.
 	 */
 	public function render( $cf7 ) {
 		$post_id = sanitize_text_field( $_GET['post'] );
 		$enable  = get_post_meta( $post_id, "_idpay_cf7_enable", TRUE );
-		$amount   = get_post_meta( $post_id, "_idpay_cf7_amount", TRUE );
+		$amount  = get_post_meta( $post_id, "_idpay_cf7_amount", TRUE );
 		if ( $enable == "1" ) {
 			$checked = "CHECKED";
 		} else {
