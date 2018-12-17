@@ -59,8 +59,6 @@ class AdditionalSettingsForm implements ServiceInterface {
 		$admin_table_output .= "<br> برای اتصال به درگاه پرداخت میتوانید از فیلدهای زیر استفاده نمایید ";
 		$admin_table_output .= "<br>
         <span style='color:#F00;'>
-        user_email فیلد یمیل کاربر.
-        <br>
          description فیلد توضیحات.
         <br>
          user_mobile فیلد شماره تلفن کاربر.
