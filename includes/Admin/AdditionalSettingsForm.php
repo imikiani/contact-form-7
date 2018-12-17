@@ -37,8 +37,7 @@ class AdditionalSettingsForm implements ServiceInterface {
 	public function render( $cf7 ) {
 		$post_id = sanitize_text_field( $_GET['post'] );
 		$enable  = get_post_meta( $post_id, "_idpay_cf7_enable", TRUE );
-		$price   = get_post_meta( $post_id, "_idpay_cf7_price", TRUE );
-		$email   = get_post_meta( $post_id, "_idpay_cf7_email", TRUE );
+		$amount   = get_post_meta( $post_id, "_idpay_cf7_amount", TRUE );
 		if ( $enable == "1" ) {
 			$checked = "CHECKED";
 		} else {
@@ -54,16 +53,16 @@ class AdditionalSettingsForm implements ServiceInterface {
 		$admin_table_output .= "<label for='idpay_active'>فعال سازی امکان پرداخت آنلاین</label>";
 		$admin_table_output .= "</div>";
 		$admin_table_output .= "<table>";
-		$admin_table_output .= "<tr><td>مبلغ: </td><td><input type='text' name='price' style='text-align:left;direction:ltr;' value='$price'></td><td>(ریال)</td></tr>";
+		$admin_table_output .= "<tr><td>مبلغ: </td><td><input type='text' name='amount' style='text-align:left;direction:ltr;' value='$amount'></td><td>(ریال)</td></tr>";
 		$admin_table_output .= "</table>";
 		$admin_table_output .= "<br> برای اتصال به درگاه پرداخت میتوانید از فیلدهای زیر استفاده نمایید ";
 		$admin_table_output .= "<br>
         <span style='color:#F00;'>
-         description فیلد توضیحات.
+         idpay_description فیلد توضیحات.
         <br>
-         user_mobile فیلد شماره تلفن کاربر.
+         idpay_phone فیلد شماره تلفن کاربر.
         <br>
-        user_price فیلد مبلغ دلخواه کاربر (در صورتی که کادر مبلغ خالی باشد قال استفاده است)
+        idpay_amount فیلد مبلغ دلخواه کاربر (در صورتی که کادر مبلغ خالی باشد قال استفاده است)
         </span>	";
 		$admin_table_output .= "<input type='hidden' name='email' value='2'>";
 		$admin_table_output .= "<input type='hidden' name='post' value='$post_id'>";
@@ -89,10 +88,8 @@ class AdditionalSettingsForm implements ServiceInterface {
 		} else {
 			update_post_meta( $post_id, "_idpay_cf7_enable", 0 );
 		}
-		$price = sanitize_text_field( $_POST['price'] );
-		update_post_meta( $post_id, "_idpay_cf7_price", $price );
-		$email = sanitize_text_field( $_POST['email'] );
-		update_post_meta( $post_id, "_idpay_cf7_email", $email );
+		$amount = sanitize_text_field( $_POST['amount'] );
+		update_post_meta( $post_id, "_idpay_cf7_amount", $amount );
 	}
 
 	/**

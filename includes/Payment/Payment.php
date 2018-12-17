@@ -37,71 +37,74 @@ class Payment implements ServiceInterface {
 		$postid = $cf7->id();
 
 		$enable = get_post_meta( $postid, "_idpay_cf7_enable", TRUE );
-		$email  = get_post_meta( $postid, "_idpay_cf7_email", TRUE );
 
 		if ( $enable == "1" ) {
-			if ( $email == "2" ) {
-				global $wpdb;
-				global $postid;
 
-				$wpcf7       = \WPCF7_ContactForm::get_current();
-				$submission  = \WPCF7_Submission::get_instance();
-				$user_email  = '';
-				$user_mobile = '';
-				$description = '';
-				$user_price  = '';
+			global $wpdb;
+			global $postid;
 
-				if ( $submission ) {
-					$data        = $submission->get_posted_data();
-					$user_mobile = isset( $data['user_mobile'] ) ? $data['user_mobile'] : "";
-					$description = isset( $data['description'] ) ? $data['description'] : "";
-					$user_price  = isset( $data['user_price'] ) ? $data['user_price'] : "";
-				}
-				$price = get_post_meta( $postid, "_idpay_cf7_price", TRUE );
-				if ( $price == "" ) {
-					$price = $user_price;
-				}
-				$options = get_option( 'idpay_cf7_options' );
-				foreach ( $options as $k => $v ) {
-					$value[ $k ] = $v;
-				}
-				$active_gateway    = 'IDPay';
-				$url_return        = $value['return'];
-				$table_name        = $wpdb->prefix . "cf7_transactions";
-				$_x                = array();
-				$_x['idform']      = $postid;
-				$_x['transid']     = '';
-				$_x['gateway']     = $active_gateway;
-				$_x['cost']        = $price;
-				$_x['created_at']  = time();
-				$_x['email']       = $user_email;
-				$_x['user_mobile'] = $user_mobile;
-				$_x['description'] = $description;
-				$_x['status']      = 'none';
-				$_y                = array(
-					'%d',
-					'%s',
-					'%s',
-					'%d',
-					'%d',
-					'%s',
-					'%s',
-					'%s',
-					'%s',
-				);
+			$wpcf7       = \WPCF7_ContactForm::get_current();
+			$submission  = \WPCF7_Submission::get_instance();
+			$phone       = '';
+			$description = '';
+			$amount      = '';
+			$email       = '';
 
-				if ( $active_gateway == 'IDPay' ) {
+			if ( $submission ) {
+				$data        = $submission->get_posted_data();
+				$phone       = isset( $data['idpay_phone'] ) ? $data['idpay_phone'] : "";
+				$description = isset( $data['idpay_description'] ) ? $data['idpay_description'] : "";
+				$amount      = isset( $data['idpay_amount'] ) ? $data['idpay_amount'] : "";
+				$email       = isset( $data['your-email'] ) ? $data['your-email'] : "";
+			}
 
-					$api_key = $value['api_key'];
-					$sandbox = $value['sandbox'] == 1 ? 'true' : 'false';
-					$amount  = intval( $price );
+			$predefined_amount = get_post_meta( $postid, "_idpay_cf7_amount", TRUE );
 
-					$desc = $description;
+			if ( $predefined_amount !== "" ) {
+				$amount = $predefined_amount;
+			}
+			$options = get_option( 'idpay_cf7_options' );
+			foreach ( $options as $k => $v ) {
+				$value[ $k ] = $v;
+			}
+			$active_gateway = 'IDPay';
+			$url_return     = $value['return'];
+			$table_name     = $wpdb->prefix . "cf7_transactions";
 
-					if ( empty( $amount ) ) {
-						$tmp = 'واحد پول انتخاب شده پشتیبانی نمی شود.' . ' لطفا به مدیر اطلاع دهید <br>';
-						$tmp .= '<a href="' . get_option( 'siteurl' ) . '" class="mrbtn_red" > بازگشت به سایت </a>';
-						echo '<html>
+			$row                = array();
+			$row['form_id']     = $postid;
+			$row['trans_id']    = '';
+			$row['gateway']     = $active_gateway;
+			$row['amount']      = $amount;
+			$row['created_at']  = time();
+			$row['phone']       = $phone;
+			$row['description'] = $description;
+			$row['email']       = $email;
+			$row['status']      = 'pending';
+			$row_format         = array(
+				'%d',
+				'%s',
+				'%s',
+				'%d',
+				'%d',
+				'%s',
+				'%s',
+				'%s',
+				'%s',
+			);
+
+			if ( $active_gateway == 'IDPay' ) {
+
+				$api_key = $value['api_key'];
+				$sandbox = $value['sandbox'] == 1 ? 'true' : 'false';
+				$amount  = intval( $amount );
+
+				$desc = $description;
+
+				if ( empty( $amount ) ) {
+					$tmp = 'واحد پول انتخاب شده پشتیبانی نمی شود.' . ' لطفا به مدیر اطلاع دهید <br>';
+					$tmp .= '<a href="' . get_option( 'siteurl' ) . '" class="mrbtn_red" > بازگشت به سایت </a>';
+					echo '<html>
                             <head>
                             <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
                             <title>خطا در عملیات پرداخت</title>
@@ -114,36 +117,36 @@ class Payment implements ServiceInterface {
                             </div>
                             </body>
                             </html>';
-					}
+				}
 
-					$data = array(
-						'order_id' => time(),
-						'amount'   => $amount,
-						'phone'    => $user_mobile,
-						'desc'     => $desc,
-						'callback' => $url_return,
-					);
+				$data = array(
+					'order_id' => time(),
+					'amount'   => $amount,
+					'phone'    => $phone,
+					'desc'     => $desc,
+					'callback' => $url_return,
+				);
 
-					$ch = curl_init( 'https://api.idpay.ir/v1/payment' );
-					curl_setopt( $ch, CURLOPT_POSTFIELDS, json_encode( $data ) );
-					curl_setopt( $ch, CURLOPT_RETURNTRANSFER, TRUE );
-					curl_setopt( $ch, CURLOPT_HTTPHEADER, array(
-						'Content-Type: application/json',
-						'X-API-KEY:' . $api_key,
-						'X-SANDBOX:' . $sandbox,
-					) );
+				$ch = curl_init( 'https://api.idpay.ir/v1/payment' );
+				curl_setopt( $ch, CURLOPT_POSTFIELDS, json_encode( $data ) );
+				curl_setopt( $ch, CURLOPT_RETURNTRANSFER, TRUE );
+				curl_setopt( $ch, CURLOPT_HTTPHEADER, array(
+					'Content-Type: application/json',
+					'X-API-KEY:' . $api_key,
+					'X-SANDBOX:' . $sandbox,
+				) );
 
-					$result      = curl_exec( $ch );
-					$result      = json_decode( $result );
-					$http_status = curl_getinfo( $ch, CURLINFO_HTTP_CODE );
-					curl_close( $ch );
+				$result      = curl_exec( $ch );
+				$result      = json_decode( $result );
+				$http_status = curl_getinfo( $ch, CURLINFO_HTTP_CODE );
+				curl_close( $ch );
 
-					error_log( print_r( $result, TRUE ) );
+				error_log( print_r( $result, TRUE ) );
 
-					if ( $http_status != 201 || empty( $result ) || empty( $result->id ) || empty( $result->link ) ) {
-						$tmp = sprintf( 'خطا هنگام ایجاد تراکنش. وضعیت خطا: %s - کد خطا: %s - پیام خطا: %s', $http_status, $result->error_code, $result->error_message ) . '<br> لطفا به مدیر اطلاع دهید <br><br>';
-						$tmp .= '<a href="' . get_option( 'siteurl' ) . '" class="mrbtn_red" > بازگشت به سایت </a>';
-						echo '<html>
+				if ( $http_status != 201 || empty( $result ) || empty( $result->id ) || empty( $result->link ) ) {
+					$tmp = sprintf( 'خطا هنگام ایجاد تراکنش. وضعیت خطا: %s - کد خطا: %s - پیام خطا: %s', $http_status, $result->error_code, $result->error_message ) . '<br> لطفا به مدیر اطلاع دهید <br><br>';
+					$tmp .= '<a href="' . get_option( 'siteurl' ) . '" class="mrbtn_red" > بازگشت به سایت </a>';
+					echo '<html>
                             <head>
                             <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
                             <title>خطا در عملیات پرداخت</title>
@@ -156,14 +159,14 @@ class Payment implements ServiceInterface {
                             </div>
                             </body>
                             </html>';
-					} else {
-						$_x['transid'] = $result->id;
-						$wpdb->insert( $table_name, $_x, $_y );
-						Header( 'Location: ' . $result->link );
-					}
-					exit();
+				} else {
+					$row['trans_id'] = $result->id;
+					$wpdb->insert( $table_name, $row, $row_format );
+					Header( 'Location: ' . $result->link );
 				}
+				exit();
 			}
+
 		}
 	}
 }

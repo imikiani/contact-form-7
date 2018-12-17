@@ -29,15 +29,16 @@ class Plugin {
 		if ( $wpdb->get_var( "show tables like '$table_name'" ) != $table_name ) {
 			$sql = "CREATE TABLE " . $table_name . " (
 			id mediumint(11) NOT NULL AUTO_INCREMENT,
-			idform bigint(11) DEFAULT '0' NOT NULL,
-			transid VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_persian_ci NOT NULL,
-			gateway VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_persian_ci NOT NULL,
-			cost bigint(11) DEFAULT '0' NOT NULL,
+			form_id bigint(11) DEFAULT '0' NOT NULL,
+			trans_id VARCHAR(255) NOT NULL,
+			track_id VARCHAR(255) NULL,
+			gateway VARCHAR(255) NOT NULL,
+			amount bigint(11) DEFAULT '0' NOT NULL,
+			phone VARCHAR(11) NULL,
+			description VARCHAR(255) NOT NULL,
+			email VARCHAR(255) NULL,
 			created_at bigint(11) DEFAULT '0' NOT NULL,
-			email VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_persian_ci  NULL,
-			description VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_persian_ci NOT NULL,
-			user_mobile VARCHAR(11) CHARACTER SET utf8 COLLATE utf8_persian_ci  NULL,
-			status VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_persian_ci NOT NULL,
+			status VARCHAR(255) NOT NULL,
 			PRIMARY KEY id (id)
 		);";
 			require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );

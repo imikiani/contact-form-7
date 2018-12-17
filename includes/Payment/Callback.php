@@ -4,6 +4,7 @@
  */
 
 namespace IDPay\CF7\Payment;
+
 use IDPay\CF7\ServiceInterface;
 
 /**
@@ -26,7 +27,9 @@ class Callback implements ServiceInterface {
 	}
 
 	/**
-	 * Reacts on definition of short code 'idpay_cf7_result', whenever it is defined.
+	 * Reacts on definition of short code 'idpay_cf7_result', whenever it is
+	 * defined.
+	 *
 	 * @param $atts
 	 *
 	 * @return string
@@ -42,9 +45,9 @@ class Callback implements ServiceInterface {
 			$pid       = $_POST['id'];
 			$porder_id = $_POST['order_id'];
 
-			$cf_Form = $wpdb->get_row( "SELECT * FROM " . $wpdb->prefix . "cf7_transactions WHERE transid='$pid'" );
+			$cf_Form = $wpdb->get_row( "SELECT * FROM " . $wpdb->prefix . "cf7_transactions WHERE trans_id='$pid'" );
 			if ( $cf_Form !== NULL ) {
-				$price = $cf_Form->cost;
+				$amount = $cf_Form->amount;
 			}
 
 			$api_key = $value['api_key'];
@@ -71,7 +74,7 @@ class Callback implements ServiceInterface {
 			curl_close( $ch );
 
 			if ( $http_status != 200 ) {
-				$wpdb->update( $wpdb->prefix . 'cf7_transactions', array( 'status' => 'error' ), array( 'transid' => $pid ), array( '%s' ), array( '%d' ) );
+				$wpdb->update( $wpdb->prefix . 'cf7_transactions', array( 'status' => 'failed' ), array( 'trans_id' => $pid ), array( '%s' ), array( '%d' ) );
 
 				return '<b style="color:#f44336;">' . sprintf( 'خطا هنگام بررسی وضعیت تراکنش. وضعیت خطا: %s - کد خطا: %s - پیام خطا: %s', $http_status, $result->error_code, $result->error_message ) . '<b/>';;
 			}
@@ -81,15 +84,24 @@ class Callback implements ServiceInterface {
 			$inquiry_order_id = empty( $result->order_id ) ? NULL : $result->order_id;
 			$inquiry_amount   = empty( $result->amount ) ? NULL : $result->amount;
 
-			if ( empty( $inquiry_status ) || empty( $inquiry_track_id ) || empty( $inquiry_amount ) || $inquiry_amount != $price || $inquiry_status != 100 ) {
-				$wpdb->update( $wpdb->prefix . 'cf7_transactions', array( 'status' => 'error' ), array( 'transid' => $pid ), array( '%s' ), array( '%d' ) );
+			if ( empty( $inquiry_status ) || empty( $inquiry_track_id ) || empty( $inquiry_amount ) || $inquiry_amount != $amount || $inquiry_status != 100 ) {
+				$wpdb->update( $wpdb->prefix . 'cf7_transactions', array(
+					'status'   => 'failed',
+					'track_id' => $inquiry_track_id,
+				), array( 'trans_id' => $pid ), array(
+					'%s',
+					'%s',
+				), array( '%d' ) );
 
 				return '<b style="color:#f44336;">' . $this->failed_message( $value['failed_massage'], $inquiry_track_id, $inquiry_order_id ) . '<b/>';
 			} else {
 				$wpdb->update( $wpdb->prefix . 'cf7_transactions', array(
-					'status'  => 'success',
-					'transid' => $inquiry_track_id,
-				), array( 'transid' => $pid ), array( '%s', '%s' ), array( '%d' ) );
+					'status'   => 'completed',
+					'track_id' => $inquiry_track_id,
+				), array( 'trans_id' => $pid ), array(
+					'%s',
+					'%s',
+				), array( '%d' ) );
 
 				return '<b style="color:#8BC34A;">' . $this->success_message( $value['success_massage'], $inquiry_track_id, $inquiry_order_id ) . '<b/>';
 			}
