@@ -53,7 +53,6 @@ class Payment implements ServiceInterface {
 
 				if ( $submission ) {
 					$data        = $submission->get_posted_data();
-					$user_email  = isset( $data['user_email'] ) ? $data['user_email'] : "";
 					$user_mobile = isset( $data['user_mobile'] ) ? $data['user_mobile'] : "";
 					$description = isset( $data['description'] ) ? $data['description'] : "";
 					$user_price  = isset( $data['user_price'] ) ? $data['user_price'] : "";
