@@ -1,12 +1,36 @@
 <?php
+/**
+ * @file Conatins Callback class.
+ */
+
 namespace IDPay\CF7\Payment;
 use IDPay\CF7\ServiceInterface;
 
+/**
+ * Class Callback
+ *
+ * Handles reacting on definition of a short code.
+ *
+ * The short code should be inserted into a page so that a
+ * coming transaction can be verified.
+ *
+ * @package IDPay\CF7\Payment
+ */
 class Callback implements ServiceInterface {
+
+	/**
+	 * {@inheritdoc}
+	 */
 	public function register() {
 		add_shortcode( 'idpay_cf7_result', array( $this, 'handler' ) );
 	}
 
+	/**
+	 * Reacts on definition of short code 'idpay_cf7_result', whenever it is defined.
+	 * @param $atts
+	 *
+	 * @return string
+	 */
 	public function handler( $atts ) {
 		global $wpdb;
 		$options = get_option( 'idpay_cf7_options' );
@@ -74,7 +98,20 @@ class Callback implements ServiceInterface {
 		}
 	}
 
-
+	/**
+	 * Shows a configured message when a payment is successful.
+	 * This message can be configured at the Wordpress dashboard.
+	 * Also note that the message will be shown
+	 * if the short code has been inserted in a page.
+	 *
+	 * @see \IDPay\CF7\Admin\Menu::admin_table()
+	 *
+	 * @param $failed_massage
+	 * @param $track_id
+	 * @param $order_id
+	 *
+	 * @return string
+	 */
 	function failed_message( $failed_massage, $track_id, $order_id ) {
 		return str_replace( [ "{track_id}", "{order_id}" ], [
 			$track_id,
@@ -82,6 +119,20 @@ class Callback implements ServiceInterface {
 		], $failed_massage );
 	}
 
+	/**
+	 * Show a configured message when a payment is unsuccessful.
+	 * This message can be configured at the Wordpress dashboard.
+	 * Also note that the message will be shown
+	 * if the short code has been inserted in a page.
+	 *
+	 * @see \IDPay\CF7\Admin\Menu::admin_table()
+	 *
+	 * @param $success_massage
+	 * @param $track_id
+	 * @param $order_id
+	 *
+	 * @return mixed.
+	 */
 	function success_message( $success_massage, $track_id, $order_id ) {
 		return str_replace( [ "{track_id}", "{order_id}" ], [
 			$track_id,

@@ -1,13 +1,36 @@
 <?php
+/**
+ * @file Contains Payment class.
+ */
 
 namespace IDPay\CF7\Payment;
+
 use IDPay\CF7\ServiceInterface;
 
+/**
+ * Class Payment
+ *
+ * This class defines a method which will be hooked into an event when
+ * a contact form is going to be submitted.
+ * In that method we want to redirect to IDPay payment gateway if everything is
+ * ok.
+ *
+ * @package IDPay\CF7\Payment
+ */
 class Payment implements ServiceInterface {
 
+	/**
+	 * {@inheritdoc}
+	 */
 	public function register() {
 		add_action( 'wpcf7_mail_sent', array( $this, 'after_send_mail' ) );
 	}
+
+	/** Hooks into 'wpcf7_mail_sent'.
+	 *
+	 * @param $cf7
+	 *   the contact form's data which is submitted.
+	 */
 	public function after_send_mail( $cf7 ) {
 
 		global $postid;
@@ -116,7 +139,7 @@ class Payment implements ServiceInterface {
 					$http_status = curl_getinfo( $ch, CURLINFO_HTTP_CODE );
 					curl_close( $ch );
 
-					error_log(print_r($result, true));
+					error_log( print_r( $result, TRUE ) );
 
 					if ( $http_status != 201 || empty( $result ) || empty( $result->id ) || empty( $result->link ) ) {
 						$tmp = sprintf( 'خطا هنگام ایجاد تراکنش. کد خطا: %s', $http_status ) . '<br> لطفا به مدیر اطلاع دهید <br><br>';

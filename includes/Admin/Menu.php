@@ -1,13 +1,31 @@
 <?php
-
+/**
+ * @file Contains Menu class.
+ */
 namespace IDPay\CF7\Admin;
 use IDPay\CF7\ServiceInterface;
 
+/**
+ * Class Menu
+ *
+ * Defines some admin menus as a sub menu for Contact Form menu
+ * in the Wordpress dashboard.
+ *
+ * @package IDPay\CF7\Admin
+ */
 class Menu implements ServiceInterface {
+
+	/**
+	 * {@inheritdoc}
+	 */
 	public function register() {
 		add_action( 'admin_menu', array( $this, 'admin_menu' ) );
 	}
 
+	/**
+	 * Defines some sub menus for the Contact Form 7 menu
+	 * in the Wordpress dashboard.
+	 */
 	public function admin_menu() {
 		add_submenu_page( 'wpcf7',
 			__( 'تنظیمات IDPay', 'IDPay' ),
@@ -23,7 +41,9 @@ class Menu implements ServiceInterface {
 
 	}
 
-
+	/**
+	 * A sub menu which is responsible for IDPay gateway configuration.
+	 */
 	public function admin_table() {
 		if ( ! current_user_can( "manage_options" ) ) {
 			wp_die( __( "You do not have sufficient permissions to access this page." ) );
@@ -126,6 +146,10 @@ class Menu implements ServiceInterface {
 		</td></tr></table>';
 	}
 
+	/**
+	 * A sub menu which is responsible for showing all transactions
+	 * which are done by IDPay gateway.
+	 */
 	public function list_trans() {
 		if ( ! current_user_can( "manage_options" ) ) {
 			wp_die( __( "You do not have sufficient permissions to access this page." ) );

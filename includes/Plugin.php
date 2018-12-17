@@ -1,8 +1,28 @@
 <?php
+/**
+ * @file Contains Plugin class.
+ */
 
 namespace IDPay\CF7;
 
+/**
+ * Class Plugin
+ * Defines some common actions such as activating and deactivating a plugin.
+ *
+ * @package IDPay\CF7
+ */
 class Plugin {
+
+	/**
+	 * This is triggered when the plugin is going to be activated.
+     *
+     * Creates a table in database which stores all transactions.
+     *
+	 * Also defines a variable in the 'wp-config.php' file so that
+	 * any contact form does not load javascript files in order to disabling
+	 * ajax capability of those form. This is happened so that we can redirect
+	 * to the gateway for processing a payment. => define('WPCF7_LOAD_JS', false);
+	 */
 	public static function activate() {
 		global $wpdb;
 		$table_name = $wpdb->prefix . "cf7_transactions";
@@ -52,6 +72,9 @@ class Plugin {
 		add_option( "idpay_cf7_options", $idpay_cf7_options );
 	}
 
+	/**
+	 * This is triggered when the plugin is going to be deactivated.
+	 */
 	public static function deactivate() {
 
 		function wp_config_delete( $slash = '' ) {
