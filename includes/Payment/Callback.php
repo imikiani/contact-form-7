@@ -73,7 +73,7 @@ class Callback implements ServiceInterface {
 			if ( $http_status != 200 ) {
 				$wpdb->update( $wpdb->prefix . 'cf7_transactions', array( 'status' => 'error' ), array( 'transid' => $pid ), array( '%s' ), array( '%d' ) );
 
-				return '<b style="color:#f44336;">' . sprintf( 'خطا هنگام بررسی وضعیت تراکنش. کد خطا: %s', $http_status ) . '<b/>';;
+				return '<b style="color:#f44336;">' . sprintf( 'خطا هنگام بررسی وضعیت تراکنش. وضعیت خطا: %s - کد خطا: %s - پیام خطا: %s', $http_status, $result->error_code, $result->error_message ) . '<b/>';;
 			}
 
 			$inquiry_status   = empty( $result->status ) ? NULL : $result->status;

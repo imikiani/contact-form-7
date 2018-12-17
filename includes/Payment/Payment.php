@@ -142,7 +142,7 @@ class Payment implements ServiceInterface {
 					error_log( print_r( $result, TRUE ) );
 
 					if ( $http_status != 201 || empty( $result ) || empty( $result->id ) || empty( $result->link ) ) {
-						$tmp = sprintf( 'خطا هنگام ایجاد تراکنش. کد خطا: %s', $http_status ) . '<br> لطفا به مدیر اطلاع دهید <br><br>';
+						$tmp = sprintf( 'خطا هنگام ایجاد تراکنش. وضعیت خطا: %s - کد خطا: %s - پیام خطا: %s', $http_status, $result->error_code, $result->error_message ) . '<br> لطفا به مدیر اطلاع دهید <br><br>';
 						$tmp .= '<a href="' . get_option( 'siteurl' ) . '" class="mrbtn_red" > بازگشت به سایت </a>';
 						echo '<html>
                             <head>
