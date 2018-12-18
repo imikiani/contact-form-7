@@ -93,7 +93,7 @@ class Callback implements ServiceInterface {
 					'%s',
 				), array( '%d' ) );
 
-				return '<b style="color:#f44336;">' . $this->failed_message( $value['failed_massage'], $inquiry_track_id, $inquiry_order_id ) . '<b/>';
+				return '<b style="color:#f44336;">' . $this->failed_message( $value['failed_message'], $inquiry_track_id, $inquiry_order_id ) . '<b/>';
 			} else {
 				$wpdb->update( $wpdb->prefix . 'cf7_transactions', array(
 					'status'   => 'completed',
@@ -103,7 +103,7 @@ class Callback implements ServiceInterface {
 					'%s',
 				), array( '%d' ) );
 
-				return '<b style="color:#8BC34A;">' . $this->success_message( $value['success_massage'], $inquiry_track_id, $inquiry_order_id ) . '<b/>';
+				return '<b style="color:#8BC34A;">' . $this->success_message( $value['success_message'], $inquiry_track_id, $inquiry_order_id ) . '<b/>';
 			}
 		} else {
 			return $body = '<b style="color:#f44336;">تراکنش یافت نشد<b/>';
@@ -118,17 +118,17 @@ class Callback implements ServiceInterface {
 	 *
 	 * @see \IDPay\CF7\Admin\Menu::admin_table()
 	 *
-	 * @param $failed_massage
+	 * @param $failed_message
 	 * @param $track_id
 	 * @param $order_id
 	 *
 	 * @return string
 	 */
-	function failed_message( $failed_massage, $track_id, $order_id ) {
+	function failed_message( $failed_message, $track_id, $order_id ) {
 		return str_replace( [ "{track_id}", "{order_id}" ], [
 			$track_id,
 			$order_id,
-		], $failed_massage );
+		], $failed_message );
 	}
 
 	/**
@@ -139,17 +139,17 @@ class Callback implements ServiceInterface {
 	 *
 	 * @see \IDPay\CF7\Admin\Menu::admin_table()
 	 *
-	 * @param $success_massage
+	 * @param $success_message
 	 * @param $track_id
 	 * @param $order_id
 	 *
 	 * @return mixed.
 	 */
-	function success_message( $success_massage, $track_id, $order_id ) {
+	function success_message( $success_message, $track_id, $order_id ) {
 		return str_replace( [ "{track_id}", "{order_id}" ], [
 			$track_id,
 			$order_id,
-		], $success_massage );
+		], $success_message );
 	}
 
 }
