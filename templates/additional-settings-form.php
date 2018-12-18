@@ -2,32 +2,64 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
+?>
 
-$admin_table_output = "";
-$admin_table_output .= "<form>";
-$admin_table_output .= "<div id='additional_settings-sortables' class='meta-box-sortables ui-sortable'><div id='additionalsettingsdiv' class='postbox'>";
-$admin_table_output .= "<div class='handlediv' title='Click to toggle'><br></div><h3 class='hndle ui-sortable-handle'> <span>اطلاعات پرداخت برای فرم</span></h3>";
-$admin_table_output .= "<div class='inside'>";
-$admin_table_output .= "<div class='mail-field'>";
-$admin_table_output .= "<input name='enable' id='idpay_active' value='1' type='checkbox' $checked>";
-$admin_table_output .= "<label for='idpay_active'>فعال سازی امکان پرداخت آنلاین</label>";
-$admin_table_output .= "</div>";
-$admin_table_output .= "<table>";
-$admin_table_output .= "<tr><td>مبلغ: </td><td><input type='text' name='amount' style='text-align:left;direction:ltr;' value='$amount'></td><td>(ریال)</td></tr>";
-$admin_table_output .= "</table>";
-$admin_table_output .= "<br> برای اتصال به درگاه پرداخت میتوانید از فیلدهای زیر استفاده نمایید ";
-$admin_table_output .= "<br>
-        <span style='color:#F00;'>
-         idpay_description فیلد توضیحات.
-        <br>
-         idpay_phone فیلد شماره تلفن کاربر.
-        <br>
-        idpay_amount فیلد مبلغ دلخواه کاربر (در صورتی که کادر مبلغ خالی باشد قال استفاده است)
-        </span>	";
-$admin_table_output .= "<input type='hidden' name='email' value='2'>";
-$admin_table_output .= "<input type='hidden' name='post' value='$post_id'>";
-$admin_table_output .= "</td></tr></table></form>";
-$admin_table_output .= "</div>";
-$admin_table_output .= "</div>";
-$admin_table_output .= "</div>";
-echo $admin_table_output;
+<form>
+    <div>
+        <input name='idpay_enable' id='idpay_active' value='1'
+               type='checkbox' <?php echo $checked ?>>
+        <label for='idpay_active'><?php _e( 'Enable Payment through IDPay gateway', 'contact-form-7-idpay' ) ?></label>
+    </div>
+    <table>
+        <tr>
+            <td><?php _e( 'Predefined amount', 'contact-form-7-idpay' ) ?></td>
+            <td><input type='text' name='idpay_amount'
+                       value='<?php echo $amount ?>'>
+            </td>
+            <td><?php _e( 'Rial', 'contact-form-7-idpay' ) ?></td>
+        </tr>
+    </table>
+
+    <div>
+        <p>
+			<?php _e( 'You can choose fields below in your form. If the predefined amount is not empty, field <code>idpay_amount</code> will be ignored. On the other hand, if you want your customer to enter an arbitrary amount, choose <code>idpay_amount</code> in your form and clear the predefined amount.', 'contact-form-7-idpay' ) ?>
+        </p>
+        <p>
+			<?php _e( "Also check your wp-config.php file and look for this line of code: <code>define('WPCF7_LOAD_JS', false)</code>. If there is not such a line, please put it into your wp-config.file.", 'contact-form-7-idpay' ) ?>
+        </p>
+    </div>
+
+    <table class="widefat">
+        <thead>
+        <tr>
+            <th><?php _e( 'Field', 'contact-form-7-idpay' ) ?></th>
+            <th><?php _e( 'Description', 'contact-form-7-idpay' ) ?></th>
+            <th><?php _e( 'Example', 'contact-form-7-idpay' ) ?></th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr>
+            <td>idpay_amount</td>
+            <td><?php _e( 'An arbitrary amount', 'contact-form-7-idpay' ) ?></td>
+            <td><code>[text idpay_amount]</code>
+            </td>
+        </tr>
+        <tr>
+            <td>idpay_description</td>
+            <td><?php _e( 'Payment description', 'contact-form-7-idpay' ) ?></td>
+            <td><code>[text idpay_description]</code></td>
+        </tr>
+        <tr>
+            <td>idpay_phone</td>
+            <td><?php _e( 'Phone number field', 'contact-form-7-idpay' ) ?></td>
+            <td><code>[text idpay_phone]</code>
+            </td>
+        </tr>
+
+        </tbody>
+
+    </table>
+    <input type='hidden' name='post' value='<?php echo $post_id ?>'>
+
+</form>

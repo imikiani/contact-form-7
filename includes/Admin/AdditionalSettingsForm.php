@@ -59,13 +59,13 @@ class AdditionalSettingsForm implements ServiceInterface {
 	 */
 	public function save( $cf7 ) {
 		$post_id = sanitize_text_field( $_POST['post'] );
-		if ( ! empty( $_POST['enable'] ) ) {
-			$enable = sanitize_text_field( $_POST['enable'] );
+		if ( ! empty( $_POST['idpay_enable'] ) ) {
+			$enable = sanitize_text_field( $_POST['idpay_enable'] );
 			update_post_meta( $post_id, "_idpay_cf7_enable", $enable );
 		} else {
 			update_post_meta( $post_id, "_idpay_cf7_enable", 0 );
 		}
-		$amount = sanitize_text_field( $_POST['amount'] );
+		$amount = sanitize_text_field( $_POST['idpay_amount'] );
 		update_post_meta( $post_id, "_idpay_cf7_amount", $amount );
 	}
 
@@ -81,8 +81,8 @@ class AdditionalSettingsForm implements ServiceInterface {
 	 */
 	public function editor_panels( $panels ) {
 		$new_page = array(
-			'PricePay' => array(
-				'title'    => __( 'اطلاعات پرداخت', 'IDPay' ),
+			'IDPayPanel' => array(
+				'title'    => __( 'IDPay payment', 'contact-form-7-idpay' ),
 				'callback' => array( $this, 'render' ),
 			),
 		);
