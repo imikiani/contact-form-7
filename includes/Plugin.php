@@ -59,7 +59,7 @@ class Plugin {
 		} else {
 			?>
             <div class="error">
-                <p><?php _e( 'wp-config.php is not writable, please make wp-config.php writable - set it to 0777 temporarily, then set back to its original setting after this plugin has been activated.', 'cf7pp' ); ?></p>
+                <p><?php _e( 'wp-config.php is not writable, please make wp-config.php writable - set it to 0777 temporarily, then set back to its original setting after this plugin has been activated.', 'idpay-for-contact-form-7' ); ?></p>
             </div>
 			<?php
 			exit;
@@ -92,7 +92,7 @@ class Plugin {
 		} else if ( file_exists( ABSPATH . "wp-config.php" ) && ! is_writable( ABSPATH . "wp-config.php" ) ) {
 			?>
             <div class="error">
-                <p><?php _e( 'wp-config.php is not writable, please make wp-config.php writable - set it to 0777 temporarily, then set back to its original setting after this plugin has been deactivated.', 'cf7pp' ); ?></p>
+                <p><?php _e( 'wp-config.php is not writable, please make wp-config.php writable - set it to 0777 temporarily, then set back to its original setting after this plugin has been deactivated.', 'idpay-for-contact-form-7' ); ?></p>
             </div>
             <button onclick="goBack()">Go Back and try again</button>
             <script>
@@ -105,7 +105,7 @@ class Plugin {
 		} else if ( file_exists( dirname( ABSPATH ) . "/wp-config.php" ) && ! is_writable( dirname( ABSPATH ) . "/wp-config.php" ) ) {
 			?>
             <div class="error">
-                <p><?php _e( 'wp-config.php is not writable, please make wp-config.php writable - set it to 0777 temporarily, then set back to its original setting after this plugin has been deactivated.', 'cf7pp' ); ?></p>
+                <p><?php _e( 'wp-config.php is not writable, please make wp-config.php writable - set it to 0777 temporarily, then set back to its original setting after this plugin has been deactivated.', 'idpay-for-contact-form-7' ); ?></p>
             </div>
             <button onclick="goBack()">Go Back and try again</button>
             <script>
@@ -118,7 +118,7 @@ class Plugin {
 		} else {
 			?>
             <div class="error">
-                <p><?php _e( 'wp-config.php is not writable, please make wp-config.php writable - set it to 0777 temporarily, then set back to its original setting after this plugin has been deactivated.', 'cf7pp' ); ?></p>
+                <p><?php _e( 'wp-config.php is not writable, please make wp-config.php writable - set it to 0777 temporarily, then set back to its original setting after this plugin has been deactivated.', 'idpay-for-contact-form-7' ); ?></p>
             </div>
             <button onclick="goBack()">Go Back and try again</button>
             <script>
