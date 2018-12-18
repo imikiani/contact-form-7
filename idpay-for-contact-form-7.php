@@ -1,7 +1,6 @@
 <?php
 /*
 Plugin Name: IDPay - Contact Form 7
-Plugin URI: https://idpay.ir/
 Description: درگاه IDPay برای Contact Form 7
 Author: Developer: JMDMahdi, Publisher: IDPay
 Author URI: https://idpay.ir/
