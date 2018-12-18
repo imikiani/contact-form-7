@@ -6,7 +6,7 @@ Description: درگاه IDPay برای Contact Form 7
 Author: Developer: JMDMahdi, Publisher: IDPay
 Author URI: https://idpay.ir/
 Version: 1.0
-Text Domain: contact-form-7-idpay
+Text Domain: idpay-for-contact-form-7
 Domain Path: languages
 */
 

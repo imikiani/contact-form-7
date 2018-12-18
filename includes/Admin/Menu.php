@@ -30,14 +30,14 @@ class Menu implements ServiceInterface {
 	 */
 	public function admin_menu() {
 		add_submenu_page( 'wpcf7',
-			__( 'IDPay Configuration', 'contact-form-7-idpay' ),
-			__( 'IDPay Configuration', 'contact-form-7-idpay' ),
+			__( 'IDPay Configuration', 'idpay-for-contact-form-7' ),
+			__( 'IDPay Configuration', 'idpay-for-contact-form-7' ),
 			'wpcf7_edit_contact_forms', 'idpay_cf7_admin_table',
 			array( $this, 'admin_table' ) );
 
 		add_submenu_page( 'wpcf7',
-			__( 'Transactions List', 'contact-form-7-idpay' ),
-			__( 'IDPay Transactions', 'contact-form-7-idpay' ),
+			__( 'Transactions List', 'idpay-for-contact-form-7' ),
+			__( 'IDPay Transactions', 'idpay-for-contact-form-7' ),
 			'wpcf7_edit_contact_forms', 'idpay_cf7_admin_list_trans',
 			array( $this, 'list_trans' ) );
 

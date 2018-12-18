@@ -82,7 +82,7 @@ class AdditionalSettingsForm implements ServiceInterface {
 	public function editor_panels( $panels ) {
 		$new_page = array(
 			'IDPayPanel' => array(
-				'title'    => __( 'IDPay payment', 'contact-form-7-idpay' ),
+				'title'    => __( 'IDPay payment', 'idpay-for-contact-form-7' ),
 				'callback' => array( $this, 'render' ),
 			),
 		);
