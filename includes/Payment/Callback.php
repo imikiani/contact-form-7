@@ -43,7 +43,7 @@ class Callback implements ServiceInterface {
 		$amount   = empty( $_POST['amount'] ) ? NULL : $_POST['amount'];
 
 		global $wpdb;
-		$value = array();
+		$value   = array();
 		$options = get_option( 'idpay_cf7_options' );
 		foreach ( $options as $k => $v ) {
 			$value[ $k ] = $v;
@@ -51,9 +51,11 @@ class Callback implements ServiceInterface {
 
 		if ( ! empty( $id ) && ! empty( $order_id ) ) {
 
-			$cf_Form = $wpdb->get_row( "SELECT * FROM " . $wpdb->prefix . "cf7_transactions WHERE trans_id='$id'" );
-			if ( $cf_Form !== NULL ) {
-				$amount = $cf_Form->amount;
+			$row = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM " . $wpdb->prefix . "cf7_transactions WHERE trans_id='%s'", $id ) );
+			if ( $row !== NULL ) {
+				if ( $row->status == 'completed' ) {
+					return '<b style="color:#8BC34A;">' . $this->success_message( $value['success_message'], $row->track_id, $row->order_id ) . '</b>';
+				}
 			}
 
 			if ( $status != 10 ) {
