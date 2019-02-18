@@ -49,6 +49,7 @@ class Payment implements ServiceInterface {
 			$description = '';
 			$amount      = '';
 			$email       = '';
+			$name        = '';
 
 			if ( $submission ) {
 				$data        = $submission->get_posted_data();
@@ -56,6 +57,7 @@ class Payment implements ServiceInterface {
 				$description = isset( $data['idpay_description'] ) ? $data['idpay_description'] : "";
 				$amount      = isset( $data['idpay_amount'] ) ? $data['idpay_amount'] : "";
 				$email       = isset( $data['your-email'] ) ? $data['your-email'] : "";
+				$name        = isset( $data['your-name'] ) ? $data['your-name'] : "";
 			}
 
 			$predefined_amount = get_post_meta( $postid, "_idpay_cf7_amount", TRUE );
@@ -126,7 +128,9 @@ class Payment implements ServiceInterface {
 				$data = array(
 					'order_id' => time(),
 					'amount'   => $amount,
+					'name'     => $name,
 					'phone'    => $phone,
+					'mail'     => $email,
 					'desc'     => $desc,
 					'callback' => $url_return,
 				);
