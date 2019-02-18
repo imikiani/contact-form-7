@@ -1,6 +1,6 @@
 === IDPay for Contact Form 7 ===
 Contributors: JMDMahdi, imikiani
-Tags: idpay, form, payment, payment gateway, contact form 7, forms, contact form
+Tags: idpay, form, payment, payment gateway, contact form 7, forms, contact form, آیدی پی
 Stable tag: 2.0
 Tested up to: 5.0.3
 License: GPLv2 or later
