@@ -25,6 +25,11 @@ After creating a web service on https://idpay.ir and getting an API Key, follow 
 5. Then go to "IDPay payment" tab and Enable Payment through IDPay gateway for that form.
 6. If you would like your customer pay a fixed amount, enter that amount in to "Predefined amount" field. Also we provide a custom field so that a customer can enter their arbitrary amount in the field. This field is: idpay_amount.
 
+If you need to use this plugin in Test mode, check the "Sandbox".
+
+Also there is a complete documentation [here](https://blog.idpay.ir/helps/103) which helps you to install the plugin step by step.
+
+Thank you so much for using IDPay Payment Gateway.
 
 == Changelog ==
 
