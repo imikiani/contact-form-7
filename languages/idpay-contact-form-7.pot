@@ -1,75 +1,98 @@
-# Copyright (C) 2018 IDPay for Contact Form 7
-# This file is distributed under the same license as the IDPay for Contact Form 7 package.
+# Copyright (C) 2019 IDPay
+# This file is distributed under the same license as the IDPay for Contact Form 7 plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: IDPay for Contact Form 7 1.0\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/idpay-contact-"
-"form-7\n"
-"POT-Creation-Date: 2018-12-19 09:14:02+00:00\n"
+"Project-Id-Version: IDPay for Contact Form 7 2.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/idpay-contact-form-7\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2018-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"POT-Creation-Date: 2019-02-18T12:32:34+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.1.0\n"
+"X-Domain: idpay-contact-form-7\n"
 
-#: includes/Admin/AdditionalSettingsForm.php:85
-msgid "IDPay payment"
+#. Plugin Name of the plugin
+msgid "IDPay for Contact Form 7"
 msgstr ""
 
-#: includes/Admin/Menu.php:33 includes/Admin/Menu.php:34
-msgid "IDPay Configuration"
+#. Description of the plugin
+msgid "Integrates IDPay Payment Gateway with Contact Form 7"
 msgstr ""
 
-#: includes/Admin/Menu.php:39
-msgid "Transactions List"
+#. Author of the plugin
+msgid "IDPay"
 msgstr ""
 
-#: includes/Admin/Menu.php:40
-msgid "IDPay Transactions"
+#. Author URI of the plugin
+msgid "https://idpay.ir/"
 msgstr ""
 
-#: includes/Payment/Callback.php:79
-msgid ""
-"An error occurred while verifying a transaction. error status: %s, error "
-"code: %s, error message: %s"
+#: templates/gateway-config.php:8
+#: templates/list-transactions.php:8
+msgid "You do not have sufficient permissions to access this page."
 msgstr ""
 
-#: includes/Payment/Callback.php:109
-msgid "Transaction not found"
+#: templates/gateway-config.php:28
+msgid "Settings Updated."
 msgstr ""
 
-#: includes/Payment/Payment.php:106 includes/Payment/Payment.php:162
-msgid "Go back to the site!"
+#: templates/gateway-config.php:37
+msgid "Your payment has been successfully completed. Tracking code: {track_id}"
 msgstr ""
 
-#: includes/Payment/Payment.php:111 includes/Payment/Payment.php:117
-#: includes/Payment/Payment.php:154 includes/Payment/Payment.php:160
-msgid "Error in payment operation."
+#: templates/gateway-config.php:38
+msgid "Your payment has failed. Please try again or contact the site administrator in case of a problem."
 msgstr ""
 
-#: includes/Payment/Payment.php:118
-msgid "Amount can not be empty."
+#: templates/gateway-config.php:47
+msgid "IDPay Gateway Settings for the forms created by Contact Form 7"
 msgstr ""
 
-#: includes/Payment/Payment.php:161
-msgid ""
-"An error occurred while creating a transaction. error status: %s, error "
-"code: %s, error message: %s"
+#: templates/gateway-config.php:55
+msgid "API KEY"
 msgstr ""
 
-#: includes/Plugin.php:62
-msgid ""
-"wp-config.php is not writable, please make wp-config.php writable - set it "
-"to 0777 temporarily, then set back to its original setting after this plugin "
-"has been activated."
+#: templates/gateway-config.php:62
+msgid "You can create an API Key by going to your <a href=\"https://idpay.ir/dashboard/web-services\">web service</a>."
 msgstr ""
 
-#: includes/Plugin.php:95 includes/Plugin.php:108 includes/Plugin.php:121
-msgid ""
-"wp-config.php is not writable, please make wp-config.php writable - set it "
-"to 0777 temporarily, then set back to its original setting after this plugin "
-"has been deactivated."
+#: templates/gateway-config.php:69
+msgid "Sandbox"
+msgstr ""
+
+#: templates/gateway-config.php:76
+msgid "If you check this option, the gateway will work in test (sandbox) mode."
+msgstr ""
+
+#: templates/gateway-config.php:83
+msgid "Return page from transaction"
+msgstr ""
+
+#: templates/gateway-config.php:102
+msgid "Put short code [idpay_cf7_result] into the selected page. If you do not do this, your transaction will not be verified."
+msgstr ""
+
+#: templates/gateway-config.php:108
+msgid "Successful transaction message:"
+msgstr ""
+
+#: templates/gateway-config.php:115
+msgid "Enter the message you want to display to the customer after a successful payment. You can also choose these placeholders {track_id}, {order_id} for showing the order id and the tracking id respectively."
+msgstr ""
+
+#: templates/gateway-config.php:122
+msgid "Unsuccessful transaction message:"
+msgstr ""
+
+#: templates/gateway-config.php:129
+msgid "Enter the message you want to display to the customer after a failure occurred in a payment. You can also choose these placeholders {track_id}, {order_id} for showing the order id and the tracking id respectively."
+msgstr ""
+
+#: templates/gateway-config.php:136
+msgid "Save"
 msgstr ""
 
 #: templates/additional-settings-form.php:11
@@ -80,23 +103,17 @@ msgstr ""
 msgid "Predefined amount"
 msgstr ""
 
-#: templates/additional-settings-form.php:19 templates/list-transactions.php:66
+#: templates/additional-settings-form.php:19
+#: templates/list-transactions.php:66
 msgid "Rial"
 msgstr ""
 
 #: templates/additional-settings-form.php:25
-msgid ""
-"You can choose fields below in your form. If the predefined amount is not "
-"empty, field <code>idpay_amount</code> will be ignored. On the other hand, "
-"if you want your customer to enter an arbitrary amount, choose "
-"<code>idpay_amount</code> in your form and clear the predefined amount."
+msgid "You can choose fields below in your form. If the predefined amount is not empty, field <code>idpay_amount</code> will be ignored. On the other hand, if you want your customer to enter an arbitrary amount, choose <code>idpay_amount</code> in your form and clear the predefined amount."
 msgstr ""
 
 #: templates/additional-settings-form.php:28
-msgid ""
-"Also check your wp-config.php file and look for this line of code: "
-"<code>define('WPCF7_LOAD_JS', false)</code>. If there is not such a line, "
-"please put it into your wp-config.file."
+msgid "Also check your wp-config.php file and look for this line of code: <code>define('WPCF7_LOAD_JS', false)</code>. If there is not such a line, please put it into your wp-config.file."
 msgstr ""
 
 #: templates/additional-settings-form.php:35
@@ -123,111 +140,42 @@ msgstr ""
 msgid "Phone number field"
 msgstr ""
 
-#: templates/gateway-config.php:8 templates/list-transactions.php:8
-msgid "You do not have sufficient permissions to access this page."
-msgstr ""
-
-#: templates/gateway-config.php:28
-msgid "Settings Updated."
-msgstr ""
-
-#: templates/gateway-config.php:37
-msgid "Your payment has been successfully completed. Tracking code: {track_id}"
-msgstr ""
-
-#: templates/gateway-config.php:38
-msgid ""
-"Your payment has failed. Please try again or contact the site administrator "
-"in case of a problem."
-msgstr ""
-
-#: templates/gateway-config.php:47
-msgid "IDPay Gateway Settings for the forms created by Contact Form 7"
-msgstr ""
-
-#: templates/gateway-config.php:55
-msgid "API KEY"
-msgstr ""
-
-#: templates/gateway-config.php:62
-msgid ""
-"You can create an API Key by going to your <a href=\"https://idpay.ir/"
-"dashboard/web-services\">web service</a>."
-msgstr ""
-
-#: templates/gateway-config.php:69
-msgid "Sandbox"
-msgstr ""
-
-#: templates/gateway-config.php:76
-msgid "If you check this option, the gateway will work in test (sandbox) mode."
-msgstr ""
-
-#: templates/gateway-config.php:83
-msgid "Return page from transaction"
-msgstr ""
-
-#: templates/gateway-config.php:102
-msgid ""
-"Put short code [idpay_cf7_result] into the selected page. If you do not do "
-"this, your transaction will not be verified."
-msgstr ""
-
-#: templates/gateway-config.php:108
-msgid "Successful transaction message:"
-msgstr ""
-
-#: templates/gateway-config.php:115
-msgid ""
-"Enter the message you want to display to the customer after a successful "
-"payment. You can also choose these placeholders {track_id}, {order_id} for "
-"showing the order id and the tracking id respectively."
-msgstr ""
-
-#: templates/gateway-config.php:122
-msgid "Unsuccessful transaction message:"
-msgstr ""
-
-#: templates/gateway-config.php:129
-msgid ""
-"Enter the message you want to display to the customer after a failure "
-"occurred in a payment. You can also choose these placeholders {track_id}, "
-"{order_id} for showing the order id and the tracking id respectively."
-msgstr ""
-
-#: templates/gateway-config.php:136
-msgid "Save"
-msgstr ""
-
 #: templates/list-transactions.php:23
 msgid "Forms Transactions"
 msgstr ""
 
-#: templates/list-transactions.php:27 templates/list-transactions.php:38
+#: templates/list-transactions.php:27
+#: templates/list-transactions.php:38
 msgid "Form Name"
 msgstr ""
 
-#: templates/list-transactions.php:28 templates/list-transactions.php:39
+#: templates/list-transactions.php:28
+#: templates/list-transactions.php:39
 msgid "Date"
 msgstr ""
 
-#: templates/list-transactions.php:29 templates/list-transactions.php:40
+#: templates/list-transactions.php:29
+#: templates/list-transactions.php:40
 msgid "Email"
 msgstr ""
 
-#: templates/list-transactions.php:30 templates/list-transactions.php:41
+#: templates/list-transactions.php:30
+#: templates/list-transactions.php:41
 msgid "Amount"
 msgstr ""
 
-#: templates/list-transactions.php:31 templates/list-transactions.php:42
+#: templates/list-transactions.php:31
+#: templates/list-transactions.php:42
 msgid "Transaction ID"
 msgstr ""
 
-#: templates/list-transactions.php:32 templates/list-transactions.php:43
+#: templates/list-transactions.php:32
+#: templates/list-transactions.php:43
 msgid "Tracking Code"
 msgstr ""
 
-#: templates/list-transactions.php:33 templates/list-transactions.php:44
+#: templates/list-transactions.php:33
+#: templates/list-transactions.php:44
 msgid "Payment Status"
 msgstr ""
 
@@ -255,14 +203,57 @@ msgstr ""
 msgid "&raquo;"
 msgstr ""
 
-#. Plugin Name of the plugin/theme
-msgid "IDPay for Contact Form 7"
+#: includes/Plugin.php:62
+msgid "wp-config.php is not writable, please make wp-config.php writable - set it to 0777 temporarily, then set back to its original setting after this plugin has been activated."
 msgstr ""
 
-#. Description of the plugin/theme
-msgid "Integrates IDPay Payment Gateway with Contact Form 7"
+#: includes/Plugin.php:95
+#: includes/Plugin.php:108
+#: includes/Plugin.php:121
+msgid "wp-config.php is not writable, please make wp-config.php writable - set it to 0777 temporarily, then set back to its original setting after this plugin has been deactivated."
 msgstr ""
 
-#. Author URI of the plugin/theme
-msgid "https://idpay.ir/"
+#: includes/Payment/Payment.php:108
+#: includes/Payment/Payment.php:166
+msgid "Go back to the site!"
+msgstr ""
+
+#: includes/Payment/Payment.php:113
+#: includes/Payment/Payment.php:119
+#: includes/Payment/Payment.php:158
+#: includes/Payment/Payment.php:164
+msgid "Error in payment operation."
+msgstr ""
+
+#: includes/Payment/Payment.php:120
+msgid "Amount can not be empty."
+msgstr ""
+
+#: includes/Payment/Payment.php:165
+msgid "An error occurred while creating a transaction. error status: %s, error code: %s, error message: %s"
+msgstr ""
+
+#: includes/Payment/Callback.php:99
+msgid "An error occurred while verifying a transaction. error status: %s, error code: %s, error message: %s"
+msgstr ""
+
+#: includes/Payment/Callback.php:130
+msgid "Transaction not found"
+msgstr ""
+
+#: includes/Admin/Menu.php:33
+#: includes/Admin/Menu.php:34
+msgid "IDPay Configuration"
+msgstr ""
+
+#: includes/Admin/Menu.php:39
+msgid "Transactions List"
+msgstr ""
+
+#: includes/Admin/Menu.php:40
+msgid "IDPay Transactions"
+msgstr ""
+
+#: includes/Admin/AdditionalSettingsForm.php:85
+msgid "IDPay payment"
 msgstr ""
