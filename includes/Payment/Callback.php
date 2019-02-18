@@ -76,7 +76,7 @@ class Callback implements ServiceInterface {
 			if ( $http_status != 200 ) {
 				$wpdb->update( $wpdb->prefix . 'cf7_transactions', array( 'status' => 'failed' ), array( 'trans_id' => $pid ), array( '%s' ), array( '%d' ) );
 
-				return '<b style="color:#f44336;">' . sprintf( 'خطا هنگام بررسی وضعیت تراکنش. وضعیت خطا: %s - کد خطا: %s - پیام خطا: %s', $http_status, $result->error_code, $result->error_message ) . '<b/>';;
+				return '<b style="color:#f44336;">' . sprintf( __( 'An error occurred while verifying a transaction. error status: %s, error code: %s, error message: %s', 'idpay-contact-form-7' ), $http_status, $result->error_code, $result->error_message ) . '<b/>';
 			}
 
 			$inquiry_status   = empty( $result->status ) ? NULL : $result->status;
@@ -93,7 +93,7 @@ class Callback implements ServiceInterface {
 					'%s',
 				), array( '%d' ) );
 
-				return '<b style="color:#f44336;">' . $this->failed_message( $value['failed_message'], $inquiry_track_id, $inquiry_order_id ) . '<b/>';
+				return '<b style="color:#f44336;">' . $this->failed_message( $value['failed_message'], $inquiry_track_id, $inquiry_order_id ) . '</b>';
 			} else {
 				$wpdb->update( $wpdb->prefix . 'cf7_transactions', array(
 					'status'   => 'completed',
@@ -103,10 +103,10 @@ class Callback implements ServiceInterface {
 					'%s',
 				), array( '%d' ) );
 
-				return '<b style="color:#8BC34A;">' . $this->success_message( $value['success_message'], $inquiry_track_id, $inquiry_order_id ) . '<b/>';
+				return '<b style="color:#8BC34A;">' . $this->success_message( $value['success_message'], $inquiry_track_id, $inquiry_order_id ) . '</b>';
 			}
 		} else {
-			return $body = '<b style="color:#f44336;">تراکنش یافت نشد<b/>';
+			return '<b style="color:#f44336;">' . __('Transaction not found', 'idpay-contact-form-7').'</b>';
 		}
 	}
 
