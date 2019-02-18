@@ -35,31 +35,49 @@ class Callback implements ServiceInterface {
 	 * @return string
 	 */
 	public function handler( $atts ) {
+
+		$status   = empty( $_POST['status'] ) ? NULL : $_POST['status'];
+		$track_id = empty( $_POST['track_id'] ) ? NULL : $_POST['track_id'];
+		$id       = empty( $_POST['id'] ) ? NULL : $_POST['id'];
+		$order_id = empty( $_POST['order_id'] ) ? NULL : $_POST['order_id'];
+		$amount   = empty( $_POST['amount'] ) ? NULL : $_POST['amount'];
+
 		global $wpdb;
+		$value = array();
 		$options = get_option( 'idpay_cf7_options' );
 		foreach ( $options as $k => $v ) {
 			$value[ $k ] = $v;
 		}
 
-		if ( ! empty( $_POST['id'] ) && ! empty( $_POST['order_id'] ) ) {
-			$pid       = $_POST['id'];
-			$porder_id = $_POST['order_id'];
+		if ( ! empty( $id ) && ! empty( $order_id ) ) {
 
-			$cf_Form = $wpdb->get_row( "SELECT * FROM " . $wpdb->prefix . "cf7_transactions WHERE trans_id='$pid'" );
+			$cf_Form = $wpdb->get_row( "SELECT * FROM " . $wpdb->prefix . "cf7_transactions WHERE trans_id='$id'" );
 			if ( $cf_Form !== NULL ) {
 				$amount = $cf_Form->amount;
+			}
+
+			if ( $status != 10 ) {
+				$wpdb->update( $wpdb->prefix . 'cf7_transactions', array(
+					'status'   => 'failed',
+					'track_id' => $track_id,
+				), array( 'trans_id' => $id ), array(
+					'%s',
+					'%s',
+				), array( '%d' ) );
+
+				return '<b style="color:#f44336;">' . $this->failed_message( $value['failed_message'], $track_id, $order_id ) . '</b>';
 			}
 
 			$api_key = $value['api_key'];
 			$sandbox = $value['sandbox'] == 1 ? 'true' : 'false';
 
 			$data = array(
-				'id'       => $pid,
-				'order_id' => $porder_id,
+				'id'       => $id,
+				'order_id' => $order_id,
 			);
 
 			$ch = curl_init();
-			curl_setopt( $ch, CURLOPT_URL, 'https://api.idpay.ir/v1/payment/inquiry' );
+			curl_setopt( $ch, CURLOPT_URL, 'https://api.idpay.ir/v1.1/payment/verify' );
 			curl_setopt( $ch, CURLOPT_POSTFIELDS, json_encode( $data ) );
 			curl_setopt( $ch, CURLOPT_RETURNTRANSFER, TRUE );
 			curl_setopt( $ch, CURLOPT_HTTPHEADER, array(
@@ -74,39 +92,40 @@ class Callback implements ServiceInterface {
 			curl_close( $ch );
 
 			if ( $http_status != 200 ) {
-				$wpdb->update( $wpdb->prefix . 'cf7_transactions', array( 'status' => 'failed' ), array( 'trans_id' => $pid ), array( '%s' ), array( '%d' ) );
+				$wpdb->update( $wpdb->prefix . 'cf7_transactions', array( 'status' => 'failed' ), array( 'trans_id' => $id ), array( '%s' ), array( '%d' ) );
 
-				return '<b style="color:#f44336;">' . sprintf( __( 'An error occurred while verifying a transaction. error status: %s, error code: %s, error message: %s', 'idpay-contact-form-7' ), $http_status, $result->error_code, $result->error_message ) . '<b/>';
+				return '<b style="color:#f44336;">' . sprintf( __( 'An error occurred while verifying a transaction. error status: %s, error code: %s, error message: %s', 'idpay-contact-form-7' ), $http_status, $result->error_code, $result->error_message ) . '</b>';
 			}
 
-			$inquiry_status   = empty( $result->status ) ? NULL : $result->status;
-			$inquiry_track_id = empty( $result->track_id ) ? NULL : $result->track_id;
-			$inquiry_order_id = empty( $result->order_id ) ? NULL : $result->order_id;
-			$inquiry_amount   = empty( $result->amount ) ? NULL : $result->amount;
+			$verify_status   = empty( $result->status ) ? NULL : $result->status;
+			$verify_track_id = empty( $result->track_id ) ? NULL : $result->track_id;
+			$verify_id       = empty( $result->id ) ? NULL : $result->id;
+			$verify_order_id = empty( $result->order_id ) ? NULL : $result->order_id;
+			$verify_amount   = empty( $result->amount ) ? NULL : $result->amount;
 
-			if ( empty( $inquiry_status ) || empty( $inquiry_track_id ) || empty( $inquiry_amount ) || $inquiry_amount != $amount || $inquiry_status != 100 ) {
+			if ( empty( $verify_status ) || empty( $verify_track_id ) || empty( $verify_amount ) || $verify_amount != $amount || $verify_status < 100 ) {
 				$wpdb->update( $wpdb->prefix . 'cf7_transactions', array(
 					'status'   => 'failed',
-					'track_id' => $inquiry_track_id,
-				), array( 'trans_id' => $pid ), array(
+					'track_id' => $verify_track_id,
+				), array( 'trans_id' => $verify_id ), array(
 					'%s',
 					'%s',
 				), array( '%d' ) );
 
-				return '<b style="color:#f44336;">' . $this->failed_message( $value['failed_message'], $inquiry_track_id, $inquiry_order_id ) . '</b>';
+				return '<b style="color:#f44336;">' . $this->failed_message( $value['failed_message'], $verify_track_id, $verify_order_id ) . '</b>';
 			} else {
 				$wpdb->update( $wpdb->prefix . 'cf7_transactions', array(
 					'status'   => 'completed',
-					'track_id' => $inquiry_track_id,
-				), array( 'trans_id' => $pid ), array(
+					'track_id' => $verify_track_id,
+				), array( 'trans_id' => $verify_id ), array(
 					'%s',
 					'%s',
 				), array( '%d' ) );
 
-				return '<b style="color:#8BC34A;">' . $this->success_message( $value['success_message'], $inquiry_track_id, $inquiry_order_id ) . '</b>';
+				return '<b style="color:#8BC34A;">' . $this->success_message( $value['success_message'], $verify_track_id, $verify_order_id ) . '</b>';
 			}
 		} else {
-			return '<b style="color:#f44336;">' . __('Transaction not found', 'idpay-contact-form-7').'</b>';
+			return '<b style="color:#f44336;">' . __( 'Transaction not found', 'idpay-contact-form-7' ) . '</b>';
 		}
 	}
 

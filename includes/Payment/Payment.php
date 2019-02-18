@@ -131,7 +131,7 @@ class Payment implements ServiceInterface {
 					'callback' => $url_return,
 				);
 
-				$ch = curl_init( 'https://api.idpay.ir/v1/payment' );
+				$ch = curl_init( 'https://api.idpay.ir/v1.1/payment' );
 				curl_setopt( $ch, CURLOPT_POSTFIELDS, json_encode( $data ) );
 				curl_setopt( $ch, CURLOPT_RETURNTRANSFER, TRUE );
 				curl_setopt( $ch, CURLOPT_HTTPHEADER, array(
