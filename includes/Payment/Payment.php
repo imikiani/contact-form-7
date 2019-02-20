@@ -49,6 +49,7 @@ class Payment implements ServiceInterface {
 			$description = '';
 			$amount      = '';
 			$email       = '';
+			$name        = '';
 
 			if ( $submission ) {
 				$data        = $submission->get_posted_data();
@@ -56,6 +57,7 @@ class Payment implements ServiceInterface {
 				$description = isset( $data['idpay_description'] ) ? $data['idpay_description'] : "";
 				$amount      = isset( $data['idpay_amount'] ) ? $data['idpay_amount'] : "";
 				$email       = isset( $data['your-email'] ) ? $data['your-email'] : "";
+				$name        = isset( $data['your-name'] ) ? $data['your-name'] : "";
 			}
 
 			$predefined_amount = get_post_meta( $postid, "_idpay_cf7_amount", TRUE );
@@ -101,33 +103,39 @@ class Payment implements ServiceInterface {
 
 				$desc = $description;
 
-				if ( empty( $amount ) ) {
-					$tmp = 'واحد پول انتخاب شده پشتیبانی نمی شود.' . ' لطفا به مدیر اطلاع دهید <br>';
-					$tmp .= '<a href="' . get_option( 'siteurl' ) . '" class="mrbtn_red" > بازگشت به سایت </a>';
-					echo '<html>
-                            <head>
-                            <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-                            <title>خطا در عملیات پرداخت</title>
-                            </head>
-                            <link rel="stylesheet"  media="all" type="text/css" href="' . plugins_url( 'style.css', __FILE__ ) . '">
-                            <body>	
-                            <div> 
-                            <h3><span>خطا در عملیات پرداخت</span></h3>
-                            ' . $tmp . '	
-                            </div>
-                            </body>
-                            </html>';
-				}
+				if ( empty( $amount ) ):
+					?>
+                    <a href="<?php echo get_option( 'siteurl' ) ?>"><?php _e( 'Go back to the site!', 'idpay-contact-form-7' ) ?></a>
+                    <html>
+                    <head>
+                        <meta http-equiv="Content-Type"
+                              content="text/html; charset=utf-8"/>
+                        <title><?php _e( 'Error in payment operation.', 'idpay-contact-form-7' ) ?></title>
+                    </head>
+                    <link rel="stylesheet" media="all" type="text/css"
+                          href="<?php echo plugins_url( 'style.css', __FILE__ ) ?>">
+                    <body>
+                    <div>
+                        <h3><?php _e( 'Error in payment operation.', 'idpay-contact-form-7' ) ?></h3>
+                        <h4><?php _e( 'Amount can not be empty.', 'idpay-contact-form-7' ) ?></h4>
+                    </div>
+                    </body>
+                    </html>
+					<?php
+					exit();
+				endif;
 
 				$data = array(
 					'order_id' => time(),
 					'amount'   => $amount,
+					'name'     => $name,
 					'phone'    => $phone,
+					'mail'     => $email,
 					'desc'     => $desc,
 					'callback' => $url_return,
 				);
 
-				$ch = curl_init( 'https://api.idpay.ir/v1/payment' );
+				$ch = curl_init( 'https://api.idpay.ir/v1.1/payment' );
 				curl_setopt( $ch, CURLOPT_POSTFIELDS, json_encode( $data ) );
 				curl_setopt( $ch, CURLOPT_RETURNTRANSFER, TRUE );
 				curl_setopt( $ch, CURLOPT_HTTPHEADER, array(
@@ -141,29 +149,30 @@ class Payment implements ServiceInterface {
 				$http_status = curl_getinfo( $ch, CURLINFO_HTTP_CODE );
 				curl_close( $ch );
 
-				error_log( print_r( $result, TRUE ) );
-
-				if ( $http_status != 201 || empty( $result ) || empty( $result->id ) || empty( $result->link ) ) {
-					$tmp = sprintf( 'خطا هنگام ایجاد تراکنش. وضعیت خطا: %s - کد خطا: %s - پیام خطا: %s', $http_status, $result->error_code, $result->error_message ) . '<br> لطفا به مدیر اطلاع دهید <br><br>';
-					$tmp .= '<a href="' . get_option( 'siteurl' ) . '" class="mrbtn_red" > بازگشت به سایت </a>';
-					echo '<html>
-                            <head>
-                            <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-                            <title>خطا در عملیات پرداخت</title>
-                            </head>
-                            <link rel="stylesheet"  media="all" type="text/css" href="' . plugins_url( 'style.css', __FILE__ ) . '">
-                            <body>	
-                            <div> 
-                            <h3><span>خطا در عملیات پرداخت</span></h3>
-                                                ' . $tmp . '	
-                            </div>
-                            </body>
-                            </html>';
-				} else {
+				if ( $http_status != 201 || empty( $result ) || empty( $result->id ) || empty( $result->link ) ):
+					?>
+                    <html>
+                    <head>
+                        <meta http-equiv="Content-Type"
+                              content="text/html; charset=utf-8"/>
+                        <title><?php _e( 'Error in payment operation.', 'idpay-contact-form-7' ) ?></title>
+                    </head>
+                    <link rel="stylesheet" media="all" type="text/css"
+                          href="<?php echo plugins_url( 'style.css', __FILE__ ) ?>">
+                    <body>
+                    <div>
+                        <h3><?php _e( 'Error in payment operation.', 'idpay-contact-form-7' ) ?></h3>
+                        <h4><?php echo sprintf( __( 'An error occurred while creating a transaction. error status: %s, error code: %s, error message: %s', 'idpay-contact-form-7' ), $http_status, $result->error_code, $result->error_message ) ?></h4>
+                        <a href="<?php echo get_option( 'siteurl' ) ?>"><?php _e( 'Go back to the site!', 'idpay-contact-form-7' ) ?></a>
+                    </div>
+                    </body>
+                    </html>
+				<?php
+				else:
 					$row['trans_id'] = $result->id;
 					$wpdb->insert( $table_name, $row, $row_format );
 					Header( 'Location: ' . $result->link );
-				}
+				endif;
 				exit();
 			}
 

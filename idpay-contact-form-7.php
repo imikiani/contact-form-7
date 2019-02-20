@@ -1,11 +1,11 @@
 <?php
 /*
-Plugin Name: IDPay - Contact Form 7
-Description: درگاه IDPay برای Contact Form 7
-Author: Developer: JMDMahdi, Publisher: IDPay
+Plugin Name: IDPay for Contact Form 7
+Description: Integrates IDPay Payment Gateway with Contact Form 7
+Author: IDPay
 Author URI: https://idpay.ir/
-Version: 1.0
-Text Domain: idpay-for-contact-form-7
+Version: 2.0
+Text Domain: idpay-contact-form-7
 Domain Path: languages
 */
 
@@ -15,6 +15,16 @@ use IDPay\CF7\Init;
 use IDPay\CF7\Plugin;
 
 define( 'CF7_IDPAY_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
+
+
+/**
+ * Load plugin textdomain.
+ */
+function idpay_contact_form_7_load_textdomain() {
+	load_plugin_textdomain( 'idpay-contact-form-7', false, basename( dirname( __FILE__ ) ) . '/languages' );
+}
+
+add_action( 'init', 'idpay_contact_form_7_load_textdomain' );
 
 include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
 if ( is_plugin_active( 'contact-form-7/wp-contact-form-7.php' ) ) {
