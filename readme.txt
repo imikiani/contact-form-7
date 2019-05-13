@@ -1,8 +1,8 @@
 === IDPay for Contact Form 7 ===
 Contributors: JMDMahdi, imikiani
-Tags: idpay, form, payment, payment gateway, contact form 7, forms, contact form, آیدی پی
-Stable tag: 2.0
-Tested up to: 5.0.3
+Tags: IDPay, contact form 7, form, payment, contact form
+Stable tag: 2.0.1
+Tested up to: 5.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -32,6 +32,10 @@ Also there is a complete documentation [here](https://blog.idpay.ir/helps/103) w
 Thank you so much for using IDPay Payment Gateway.
 
 == Changelog ==
+
+= 2.0.1, May 13, 2019 =
+* Use wp_safe_remote_post() method instead of curl.
+* Try several times to connect to the gateway.
 
 = 2.0, February 18, 2019 =
 * Webservice api version 1.1.

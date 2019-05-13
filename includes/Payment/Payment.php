@@ -135,19 +135,43 @@ class Payment implements ServiceInterface {
 					'callback' => $url_return,
 				);
 
-				$ch = curl_init( 'https://api.idpay.ir/v1.1/payment' );
-				curl_setopt( $ch, CURLOPT_POSTFIELDS, json_encode( $data ) );
-				curl_setopt( $ch, CURLOPT_RETURNTRANSFER, TRUE );
-				curl_setopt( $ch, CURLOPT_HTTPHEADER, array(
-					'Content-Type: application/json',
-					'X-API-KEY:' . $api_key,
-					'X-SANDBOX:' . $sandbox,
-				) );
+				$headers = array(
+					'Content-Type' => 'application/json',
+					'X-API-KEY'    => $api_key,
+					'X-SANDBOX'    => $sandbox,
+				);
+				$args    = array(
+					'body'    => json_encode( $data ),
+					'headers' => $headers,
+					'timeout' => 15,
+				);
 
-				$result      = curl_exec( $ch );
+				$response = $this->call_gateway_endpoint( 'https://api.idpay.ir/v1.1/payment', $args );
+				if ( is_wp_error( $response ) ) :
+					?>
+                    <html>
+                    <head>
+                        <meta http-equiv="Content-Type"
+                              content="text/html; charset=utf-8"/>
+                        <title><?php _e( 'Error in payment operation.', 'idpay-contact-form-7' ) ?></title>
+                    </head>
+                    <link rel="stylesheet" media="all" type="text/css"
+                          href="<?php echo plugins_url( 'style.css', __FILE__ ) ?>">
+                    <body>
+                    <div>
+                        <h3><?php _e( 'Error in payment operation.', 'idpay-contact-form-7' ) ?></h3>
+                        <h4><?php echo $response->get_error_message(); ?></h4>
+                        <a href="<?php echo get_option( 'siteurl' ) ?>"><?php _e( 'Go back to the site!', 'idpay-contact-form-7' ) ?></a>
+                    </div>
+                    </body>
+                    </html>
+					<?php
+					exit();
+				endif;
+
+				$http_status = wp_remote_retrieve_response_code( $response );
+				$result      = wp_remote_retrieve_body( $response );
 				$result      = json_decode( $result );
-				$http_status = curl_getinfo( $ch, CURLINFO_HTTP_CODE );
-				curl_close( $ch );
 
 				if ( $http_status != 201 || empty( $result ) || empty( $result->id ) || empty( $result->link ) ):
 					?>
@@ -177,5 +201,30 @@ class Payment implements ServiceInterface {
 			}
 
 		}
+	}
+
+	/**
+	 * Calls the gateway endpoints.
+	 *
+	 * Tries to get response from the gateway for 4 times.
+	 *
+	 * @param $url
+	 * @param $args
+	 *
+	 * @return array|\WP_Error
+	 */
+	private function call_gateway_endpoint( $url, $args ) {
+		$number_of_connection_tries = 4;
+		while ( $number_of_connection_tries ) {
+			$response = wp_safe_remote_post( $url, $args );
+			if ( is_wp_error( $response ) ) {
+				$number_of_connection_tries --;
+				continue;
+			} else {
+				break;
+			}
+		}
+
+		return $response;
 	}
 }

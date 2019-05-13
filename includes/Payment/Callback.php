@@ -78,20 +78,27 @@ class Callback implements ServiceInterface {
 				'order_id' => $order_id,
 			);
 
-			$ch = curl_init();
-			curl_setopt( $ch, CURLOPT_URL, 'https://api.idpay.ir/v1.1/payment/verify' );
-			curl_setopt( $ch, CURLOPT_POSTFIELDS, json_encode( $data ) );
-			curl_setopt( $ch, CURLOPT_RETURNTRANSFER, TRUE );
-			curl_setopt( $ch, CURLOPT_HTTPHEADER, array(
-				'Content-Type: application/json',
-				'X-API-KEY:' . $api_key,
-				'X-SANDBOX:' . $sandbox,
-			) );
 
-			$result      = curl_exec( $ch );
+			$headers = array(
+				'Content-Type' => 'application/json',
+				'X-API-KEY'    => $api_key,
+				'X-SANDBOX'    => $sandbox,
+			);
+			$args    = array(
+				'body'    => json_encode( $data ),
+				'headers' => $headers,
+				'timeout' => 15,
+			);
+
+			$response = $this->call_gateway_endpoint( 'https://api.idpay.ir/v1.1/payment/verify', $args );
+
+			if ( is_wp_error( $response ) ) {
+				return '<b style="color:#f44336;">' . $response->get_error_message() . '</b>';
+			}
+
+			$http_status = wp_remote_retrieve_response_code( $response );
+			$result      = wp_remote_retrieve_body( $response );
 			$result      = json_decode( $result );
-			$http_status = curl_getinfo( $ch, CURLINFO_HTTP_CODE );
-			curl_close( $ch );
 
 			if ( $http_status != 200 ) {
 				$wpdb->update( $wpdb->prefix . 'cf7_transactions', array( 'status' => 'failed' ), array( 'trans_id' => $id ), array( '%s' ), array( '%d' ) );
@@ -145,7 +152,7 @@ class Callback implements ServiceInterface {
 	 *
 	 * @return string
 	 */
-	function failed_message( $failed_message, $track_id, $order_id ) {
+	private function failed_message( $failed_message, $track_id, $order_id ) {
 		return str_replace( [ "{track_id}", "{order_id}" ], [
 			$track_id,
 			$order_id,
@@ -166,11 +173,36 @@ class Callback implements ServiceInterface {
 	 *
 	 * @return mixed.
 	 */
-	function success_message( $success_message, $track_id, $order_id ) {
+	private function success_message( $success_message, $track_id, $order_id ) {
 		return str_replace( [ "{track_id}", "{order_id}" ], [
 			$track_id,
 			$order_id,
 		], $success_message );
+	}
+
+	/**
+	 * Calls the gateway endpoints.
+	 *
+	 * Tries to get response from the gateway for 4 times.
+	 *
+	 * @param $url
+	 * @param $args
+	 *
+	 * @return array|\WP_Error
+	 */
+	private function call_gateway_endpoint( $url, $args ) {
+		$number_of_connection_tries = 4;
+		while ( $number_of_connection_tries ) {
+			$response = wp_safe_remote_post( $url, $args );
+			if ( is_wp_error( $response ) ) {
+				$number_of_connection_tries --;
+				continue;
+			} else {
+				break;
+			}
+		}
+
+		return $response;
 	}
 
 }
